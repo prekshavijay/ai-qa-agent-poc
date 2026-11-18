@@ -1,0 +1,19 @@
+{
+  "name": "ai-qa-agent-poc",
+  "version": "1.0.0",
+  "description": "Proof-of-concept foundation for an AI system that assists the software QA lifecycle — from user stories through test generation, manual QA, PR validation, automation, and reporting.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
+  }
+}

@@ -1,0 +1,177 @@
+{
+  "generatedAt": "2026-11-18T07:57:55.552Z",
+  "observations": [
+    {
+      "scenario": "GET /health",
+      "expected": "HTTP 200 with status ok",
+      "actual": "HTTP 200: {\"status\":\"ok\",\"service\":\"AI QA Agent POC\",\"environment\":\"development\",\"version\":\"0.1.0\"}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "GET /api/v1/health",
+      "expected": "HTTP 200 with status ok",
+      "actual": "HTTP 200: {\"status\":\"ok\",\"service\":\"AI QA Agent POC\",\"environment\":\"development\",\"version\":\"0.1.0\"}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "GET /api/requirements/health",
+      "expected": "HTTP 200, mock provider active",
+      "actual": "HTTP 200: {\"status\":\"ok\",\"module\":\"requirement_analysis\",\"llm_provider\":\"mock\",\"llm_available\":true,\"mock_implementation\":true,\"note\":\"Deterministic mock provider is active. No external language model is called.\"}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "GET /api/test-cases/health",
+      "expected": "HTTP 200, mock provider active",
+      "actual": "HTTP 200: {\"status\":\"ok\",\"module\":\"test_case_generation\",\"llm_provider\":\"mock\",\"llm_available\":true,\"mock_implementation\":true,\"note\":\"Deterministic mock provider is active. No external language model is called.\"}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Frontend loads and talks to backend",
+      "expected": "Home page shows API health ok without JS crashes",
+      "actual": "Home page rendered with ok health status; console capture active",
+      "status": "PASS"
+    },
+    {
+      "scenario": "AUTH-101 story summary & functional requirements",
+      "expected": "Story summary and functional requirements appear; IDs unique",
+      "actual": "status=complete; FR count=6; unique=6; summary starts with login title: true",
+      "status": "PASS"
+    },
+    {
+      "scenario": "AUTH-101 acceptance criteria extracted",
+      "expected": "Five AC entries with unique IDs",
+      "actual": "AC count=5; ids=AC-001, AC-002, AC-003, AC-004, AC-005",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Mock provider identified",
+      "expected": "provider=mock and note states no external model",
+      "actual": "provider=mock; note=Deterministic mock provider. No external language model was called.",
+      "status": "PASS"
+    },
+    {
+      "scenario": "No unsupported business rules invented",
+      "expected": "Requirement descriptions remain grounded in story text",
+      "actual": "FR descriptions sample: Users should be able to log in with valid credentials. | Invalid credentials should display an error message. | Email and password fields are mandatory.",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Empty story title (UI validation)",
+      "expected": "Client-side error \"Title is required.\" and no analysis",
+      "actual": "Title is required. shown; analyze not submitted",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Missing description",
+      "expected": "insufficient_input / clarification about description",
+      "actual": "UI shows insufficient description summary",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Story without acceptance criteria",
+      "expected": "Analysis proceeds with needs_clarification and AC questions",
+      "actual": "Needs clarification status visible; clarification section present",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Vague / ambiguous story",
+      "expected": "Ambiguities and clarification questions generated",
+      "actual": "Ambiguity IDs and vague-language messaging visible in UI",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Test cases generated from AUTH-101 analysis",
+      "expected": "Successful generation with positive + negative cases",
+      "actual": "HTTP 200; count=11; types=positive, negative, integration; status=needs_clarification",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Boundary/edge/integration only when justified",
+      "expected": "Optional types present only if generator supports them for story",
+      "actual": "types present: positive, negative, integration",
+      "status": "PASS",
+      "notes": "Validated presence of generated types without requiring unsupported categories."
+    },
+    {
+      "scenario": "Requirement & acceptance-criterion mapping",
+      "expected": "Every TC maps to a valid FR; AC IDs valid when set",
+      "actual": "allMapped=true; acMappedOk=true",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Preconditions, steps, expected results, priority, automation",
+      "expected": "Cases expose preconditions/steps/expected/priority/automation",
+      "actual": "sample={\"id\":\"TC-001\",\"priority\":\"critical\",\"automation\":\"suitable\",\"steps\":2,\"preconditions\":2}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Duplicate test cases avoided",
+      "expected": "No duplicate requirement/type/title triples",
+      "actual": "unique=11 of 11",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Expandable test case details",
+      "expected": "Expand reveals preconditions, steps, expected result",
+      "actual": "First test case expanded successfully in UI",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Test case filters",
+      "expected": "Type, priority, and clarification filters update the list",
+      "actual": "Filters exercised for positive, negative, high priority, clarification-only",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Invalid analyze payload (blank title)",
+      "expected": "HTTP 422 validation_error",
+      "actual": "HTTP 422: {\"error\":{\"code\":\"validation_error\",\"message\":\"Request validation failed\",\"details\":{\"errors\":[{\"type\":\"value_error\",\"loc\":[\"body\",\"title\"],\"msg\":\"Value error, title must not be empty\",\"input\":\"   \",\"ctx\":{\"error\":\"title must not be empty\"}}]}}}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Empty requirements do not fabricate test cases",
+      "expected": "generation_status=no_test_cases and empty test_cases",
+      "actual": "HTTP 200; status=no_test_cases; count=0",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Invalid generate payload rejected",
+      "expected": "HTTP 422 validation_error",
+      "actual": "HTTP 422: {\"error\":{\"code\":\"validation_error\",\"message\":\"Request validation failed\",\"details\":{\"errors\":[{\"type\":\"missing\",\"loc\":[\"body\",\"story_summary\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"functional_requirements\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"non_functional_requirements\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"acceptance_criteria\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"ambiguities\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"clarification_questions\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"analysis_status\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"provider\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}},{\"type\":\"missing\",\"loc\":[\"body\",\"provider_note\"],\"msg\":\"Field required\",\"input\":{\"story_id\":\"STORY-X\"}}]}}}",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Ambiguous requirements not silently treated as definite",
+      "expected": "needs_clarification flagged; not_testable skipped",
+      "actual": "status=needs_clarification; flagged=1; skipped=NFR-001",
+      "status": "PASS"
+    },
+    {
+      "scenario": "Frontend handles validation without crash",
+      "expected": "Validation message shown; page remains usable",
+      "actual": "Title validation shown on Test Case Generation page; no crash",
+      "status": "PASS"
+    },
+    {
+      "scenario": "No application crashes / JS page errors",
+      "expected": "No pageerror or console error during session",
+      "actual": "No JS errors (3 console lines captured)",
+      "status": "PASS"
+    }
+  ],
+  "analysisSummary": {
+    "storyId": "AUTH-101",
+    "frCount": 6,
+    "acCount": 5,
+    "ambiguityCount": 0
+  },
+  "generationSummary": {
+    "testCaseCount": 11,
+    "types": [
+      "positive",
+      "negative",
+      "integration"
+    ],
+    "generationStatus": "needs_clarification"
+  }
+}
