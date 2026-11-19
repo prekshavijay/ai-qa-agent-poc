@@ -10,8 +10,13 @@ import {
 import { fetchTestCaseHealth } from '../services/testCases'
 import type { TestCaseGenerationHealth } from '../types/testCases'
 
-export function TestCaseGenerationPage() {
+type TestCaseGenerationPageProps = {
+  onNavigateToQaReview?: () => void
+}
 
+export function TestCaseGenerationPage({
+  onNavigateToQaReview,
+}: TestCaseGenerationPageProps) {
   const {
     analysis,
     result,
@@ -142,7 +147,20 @@ export function TestCaseGenerationPage() {
           </p>
         ) : null}
 
-        {result ? <TestCaseResults generation={result} /> : null}
+        {result ? (
+          <div className="space-y-3">
+            <TestCaseResults generation={result} />
+            {onNavigateToQaReview ? (
+              <button
+                type="button"
+                onClick={onNavigateToQaReview}
+                className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-800 hover:bg-slate-50"
+              >
+                Open QA Review for {result.story_id}
+              </button>
+            ) : null}
+          </div>
+        ) : null}
 
         {!result && analysis && !generating ? (
           <div className="space-y-3">

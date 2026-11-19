@@ -1,7 +1,7 @@
 # AI QA Agent POC — End-to-End Test Report
 
 **Scope:** Steps 1, 2, and 3 only (foundation, requirement analysis, test case generation)  
-**Date:** 2026-11-18T07:57:56.042Z  
+**Date:** 2026-11-18T11:43:41.130Z  
 **Environment:** Backend `http://127.0.0.1:8000`, Frontend `http://127.0.0.1:5173`  
 **LLM provider:** Deterministic mock (no external model)  
 **Automation:** Playwright Chromium (headed, video on)

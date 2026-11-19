@@ -1,8 +1,18 @@
-"""SQLAlchemy ORM models.
-
-Domain models will be added in later stages (user stories, test cases, etc.).
-"""
+"""SQLAlchemy ORM models."""
 
 from app.models.base import TimestampMixin
+from app.models.qa_execution import QaExecutionResult, QaExecutionRun
+from app.models.test_case_management import (
+    TestCaseRecord,
+    TestCaseReview,
+    TestCaseVersion,
+)
 
-__all__ = ["TimestampMixin"]
+__all__ = [
+    "QaExecutionResult",
+    "QaExecutionRun",
+    "TimestampMixin",
+    "TestCaseRecord",
+    "TestCaseReview",
+    "TestCaseVersion",
+]

@@ -42,7 +42,7 @@ ai-qa-agent-poc/
 - **Routes** stay thin. Requirement analysis and test case generation routes call their agents.
 - **Agents** orchestrate validation, services, and integrations.
 - **Integrations** wrap third-party APIs behind stable interfaces.
-- **Services** own business rules. The requirement analysis service decides what is a requirement and rejects statements that are not in the story. The test case generation service maps only existing requirement IDs into cases and does not invent unsupported behaviour.
+- **Services** own business rules. The requirement analysis service decides what is a requirement and rejects statements that are not in the story. The test case generation service maps only existing requirement IDs into cases and does not invent unsupported behaviour. The QA execution service creates runs only from the current approved snapshot and keeps that version id on each result.
 
 
 ## Database strategy

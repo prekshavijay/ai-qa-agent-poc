@@ -43,6 +43,21 @@ export type SkippedRequirement = {
 
 export type TestCaseGenerationRequest = RequirementAnalysisResponse
 
+export type PersistenceStatus = 'saved' | 'not_required' | 'failed'
+
+export type PersistenceError = {
+  code: string
+  message: string
+}
+
+export type PersistenceResult = {
+  status: PersistenceStatus
+  saved_count: number
+  skipped_duplicates: number
+  warning: string | null
+  error: PersistenceError | null
+}
+
 export type TestCaseGenerationResponse = {
   story_id: string
   story_summary: string
@@ -52,6 +67,7 @@ export type TestCaseGenerationResponse = {
   provider: string
   provider_note: string
   summary: string
+  persistence?: PersistenceResult
 }
 
 export type TestCaseGenerationHealth = {

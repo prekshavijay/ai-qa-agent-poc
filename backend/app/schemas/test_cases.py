@@ -82,6 +82,31 @@ class TestCaseGenerationRequest(RequirementAnalysisResponse):
     __test__ = False
 
 
+class PersistenceStatus(str, Enum):
+    """Outcome of persisting generated cases for QA review."""
+
+    SAVED = "saved"
+    NOT_REQUIRED = "not_required"
+    FAILED = "failed"
+
+
+class PersistenceError(BaseModel):
+    """Structured persistence failure details (no internal stack traces)."""
+
+    code: str
+    message: str
+
+
+class PersistenceResult(BaseModel):
+    """Whether generated cases were stored for QA review."""
+
+    status: PersistenceStatus = PersistenceStatus.NOT_REQUIRED
+    saved_count: int = 0
+    skipped_duplicates: int = 0
+    warning: Optional[str] = None
+    error: Optional[PersistenceError] = None
+
+
 class TestCaseGenerationResponse(BaseModel):
     """Structured test cases with requirement and acceptance-criterion traceability."""
 
@@ -98,6 +123,13 @@ class TestCaseGenerationResponse(BaseModel):
     )
     summary: str = Field(
         description="Short overview of what was generated and what was skipped."
+    )
+    persistence: PersistenceResult = Field(
+        default_factory=PersistenceResult,
+        description=(
+            "Whether generated cases were persisted for QA review. "
+            "status=failed means cases were generated but not saved."
+        ),
     )
 
 

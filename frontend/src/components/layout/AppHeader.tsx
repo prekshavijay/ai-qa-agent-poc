@@ -1,4 +1,4 @@
-type PageId = 'home' | 'requirements' | 'test-cases'
+type PageId = 'home' | 'requirements' | 'test-cases' | 'qa-review' | 'qa-execution'
 
 type AppHeaderProps = {
   current: PageId
@@ -9,6 +9,8 @@ const LINKS: Array<{ id: PageId; label: string }> = [
   { id: 'home', label: 'Home' },
   { id: 'requirements', label: 'Requirement Analysis' },
   { id: 'test-cases', label: 'Test Case Generation' },
+  { id: 'qa-review', label: 'QA Review' },
+  { id: 'qa-execution', label: 'QA Execution' },
 ]
 
 export function AppHeader({ current, onNavigate }: AppHeaderProps) {

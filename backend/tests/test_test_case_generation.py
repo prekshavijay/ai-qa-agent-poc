@@ -103,6 +103,8 @@ def test_successful_test_case_generation() -> None:
     assert "positive" in types
     assert all(case["test_case_id"].startswith("TC-") for case in payload["test_cases"])
     assert all(case["steps"] for case in payload["test_cases"])
+    assert payload["persistence"]["status"] == "saved"
+    assert payload["persistence"]["error"] is None
 
 
 def test_requirement_id_traceability() -> None:
@@ -451,3 +453,35 @@ def test_end_to_end_analyze_then_generate() -> None:
     }
     for case in payload["test_cases"]:
         assert case["requirement_id"] in valid_ids
+
+
+def test_generate_reports_persistence_failure(monkeypatch) -> None:
+    """Generation still returns cases when persistence fails, with explicit warning."""
+
+    class FailingManagementService:
+        def save_from_generation(self, db, generation, analysis):
+            raise RuntimeError("simulated database write failure")
+
+    monkeypatch.setattr(
+        "app.api.routes.test_cases._management_service",
+        lambda: FailingManagementService(),
+    )
+
+    payload = deepcopy(COMPLETE_ANALYSIS)
+    payload["story_id"] = "STORY-PERSIST-FAIL"
+    response = _generate(payload)
+    assert response.status_code == 200
+    body = response.json()
+
+    assert body["test_cases"], "Generated cases must still be returned"
+    assert body["persistence"]["status"] == "failed"
+    assert body["persistence"]["saved_count"] == 0
+    assert body["persistence"]["error"] is not None
+    assert body["persistence"]["error"]["code"] == "persistence_error"
+    assert "simulated database write failure" in body["persistence"]["error"]["message"]
+    assert body["persistence"]["warning"]
+    assert "not saved" in body["persistence"]["warning"].lower()
+
+    story = client.get(f"/api/test-case-management/stories/{payload['story_id']}")
+    assert story.status_code == 200
+    assert story.json()["total"] == 0

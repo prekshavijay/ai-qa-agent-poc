@@ -6,7 +6,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api.router import api_router
+from app.api.routes.qa_execution import router as qa_execution_router
 from app.api.routes.requirements import router as requirements_router
+from app.api.routes.test_case_management import router as test_case_management_router
 from app.api.routes.test_cases import router as test_cases_router
 from app.core.config import settings
 from app.core.exceptions import register_exception_handlers
@@ -53,6 +55,10 @@ app.include_router(api_router, prefix=settings.api_prefix)
 # so these routers are attached directly to keep /api/... paths stable.
 app.include_router(requirements_router, prefix="/api/requirements")
 app.include_router(test_cases_router, prefix="/api/test-cases")
+app.include_router(
+    test_case_management_router, prefix="/api/test-case-management"
+)
+app.include_router(qa_execution_router, prefix="/api/qa-execution")
 
 
 

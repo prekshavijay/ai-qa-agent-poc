@@ -193,6 +193,29 @@ export function TestCaseResults({ generation }: TestCaseResultsProps) {
         {generation.provider_note}
       </p>
 
+      {generation.persistence?.status === 'failed' ? (
+        <p
+          role="alert"
+          className="rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-900"
+        >
+          {generation.persistence.warning ??
+            'Test cases were generated but not saved for QA review.'}
+          {generation.persistence.error
+            ? ` (${generation.persistence.error.code}: ${generation.persistence.error.message})`
+            : null}
+        </p>
+      ) : null}
+
+      {generation.persistence?.status === 'saved' &&
+      generation.persistence.warning ? (
+        <p
+          role="status"
+          className="rounded-md border border-sky-200 bg-sky-50 px-3 py-2 text-sm text-sky-900"
+        >
+          {generation.persistence.warning}
+        </p>
+      ) : null}
+
       <SectionCard title="Summary">
         <p className="text-sm text-slate-800">{generation.summary}</p>
         <p className="mt-2 text-sm text-slate-600">{generation.story_summary}</p>

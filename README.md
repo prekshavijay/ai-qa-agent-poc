@@ -113,6 +113,14 @@ When `LLM_PROVIDER` is empty or `mock`, the requirement analysis agent uses that
 
 Generation consumes the requirement analysis output only — it does not re-analyse or invent requirements. The frontend **Test Case Generation** page can analyze a story first, or continue from a completed Requirement Analysis result.
 
+## QA execution
+
+`POST /api/qa-execution/runs` creates a manual execution run for selected test cases that are currently approved. Each case is stored as `not_run` and linked to that approved version. Later edits do not change the link.
+
+`POST /api/qa-execution/runs/{run_id}/results` records a manual result and recalculates passed, failed, blocked, and not-run counts. The run stays incomplete while any case is `not_run`, and becomes `completed` only when every case is `passed`, `failed`, or `blocked`.
+
+`GET /api/qa-execution/health` reports that automated browser and API execution is not implemented yet. The frontend **QA Execution** page lists runs and records results by hand.
+
 ## Verify health
 
 ```bash
@@ -147,7 +155,7 @@ pytest
 
 - AI agents and prompts
 - Jira / Git / SonarQube integrations
-- Test execution engines
+- Automated Playwright execution and AI-generated test scripts
 - Alembic migrations (planned for Stage 2)
 - Authentication
 
